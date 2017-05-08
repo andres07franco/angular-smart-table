@@ -1,0 +1,73 @@
+<div class="panel panel-default col-lg-12 Sispuertos-Panel">
+    <div class="panel-body ">
+        
+        <form class="form">
+            <div class="row">
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 Sispuertos-label-filtro" for="email">Recalada:</label>
+                        <div class="col-lg-9">
+                            <input type="email" class="form-control" id="email">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 Sispuertos-label-filtro" for="pwd">BL:</label>
+                        <div class="col-lg-9">
+                            <input type="password" class="form-control" id="pwd">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row top-buffer">
+
+                <div class="col-lg-4">
+
+                  <div class="form-group">
+                    <label class="control-label col-lg-3 Sispuertos-label-filtro" for="pwd">Fecha:</label>
+                    <div class="col-lg-9">
+
+                      <div class="form-group input-group">
+
+                        <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" ng-model="dt" is-open="dtFecha.opened" ng-required="true"
+                          close-text="Close" />
+                        <span class="input-group-btn ">
+                              <button type="button" class="btn btn-default" ng-click="openPopUpdtFecha()"><i class="glyphicon glyphicon-calendar"></i></button>
+                         </span>
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-lg-4">
+
+                    <div class="form-group">
+                        <label class="control-label col-lg-3 Sispuertos-label-filtro" for="pwd">Tercero:</label>
+                        <div class="col-lg-9">
+
+                            <div class="form-group input-group">
+
+                                <input type="text" class="form-control" ng-required="true" />
+                                <span class="input-group-btn ">
+                                        <button type="button" class="btn btn-default" ><i class="glyphicon glyphicon-search"></i></button>
+                                    </span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class=" col-lg-4">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <button type="submit" class="btn btn-default">Limpiar</button>
+                </div>
+
+            </div>
+
+        </form>
+        
+    </div>
+</div>

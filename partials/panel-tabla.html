@@ -1,0 +1,71 @@
+<div class="Sispuertos-ActionBar">
+    <button type="button" class="btn btn-link btn-sx Sispuertos-link">
+        <span class="glyphicon glyphicon-edit Sispuertos-Icon"></span>
+        Editar
+    </button>
+    <button type="button" class="btn btn-link btn-sx Sispuertos-link">
+        <span class="glyphicon glyphicon-remove Sispuertos-Icon"></span>
+        Eliminar
+    </button>
+    <button smart-button-selector config-Field-Chooser="$ctrl.configFieldChooser" type="button" class="btn btn-link btn-sx Sispuertos-link">
+        <span class="glyphicon glyphicon-th-list Sispuertos-Icon"></span>
+        Selector de Campo
+    </button>                
+</div>
+
+
+    <!---  call="callServer" -->
+    <div class="Sispuertos-Grid table-responsive">
+        <smart-table data="$ctrl.displayed"
+                     cssclass="Sispuertos-Grid"
+                     column-draggable="true"
+                     selectable="true"
+                     selection-mode="multiple"
+                     selection-with-checkcolumn="true"
+                     on-select-row="$ctrl.selecionarfila"
+                     show-edit-column="true"
+                     on-save-change="$ctrl.guardarCambios"
+                     config-Field-Chooser="$ctrl.configFieldChooser">
+            <smart-columns>
+                <smart-column title="ID" field="id" filter="true" sorter="true" edit-mode="false">
+                </smart-column>
+                <smart-column title="Nombre"
+                              field="name" filter="true"
+                              filter-control="select"
+                              filter-Select-Option="$ctrl.heroes"
+                              filter-show-options="false">
+                    <!--filter-default-pattern=""-->
+                </smart-column>
+                <smart-column title="Apellido"
+                              field="apellido"
+                              filter="true"
+                              filter-show-options="false">
+
+                </smart-column>
+                <smart-column title="Edad" field="age"
+                              filter="true" sorter="true" format="currency:$:2" align="right">
+                </smart-column>
+                <smart-column title="saved2" field="saved2"
+                              filter="true" sorter="true" format="currency:$:2" align="right">
+                </smart-column>
+                <smart-column title="saved3" field="saved3"
+                              filter="true" sorter="true" format="currency:$:2" align="right">
+                </smart-column>
+                <smart-column title="saved4" field="saved4"
+                              filter="true" sorter="true" format="currency:$:2" align="right" filter-control="number">
+                </smart-column>
+                <smart-column visible="false" title="Fecha" field="Fecha"
+                              filter="true" sorter="true" align="right" filter-control="uib-datepicker">
+                    <!--number,text,select,uib-datepicker -->
+                </smart-column>
+                <smart-column-button title="Eliminar" field="saved" on-button-click="$ctrl.eliminarRow">
+                </smart-column-button>
+            </smart-columns>
+            <smart-table-child>
+
+            </smart-table-child>
+            <smart-config-pagination displayed-pages="4" items-by-page="10" size-pages="10,15,25">
+            </smart-config-pagination>
+        </smart-table>
+
+    </div>

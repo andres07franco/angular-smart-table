@@ -1,0 +1,57 @@
+Funcionalidades principales
+---------------------------------
+ok - check all 
+ok - edit column y estados 
+ok - link button or column buttom
+ok - selector de campos
+ok Tipos de Controles al Filtrar (Select, DatePcker,Text)
+ok Tipo de Busqueda en Filtro (mandar al server)
+---------------------------------
+master detail
+tipos de controles al editar (f4?)
+
+
+
+                        selection-mode="multiple"
+                        selection-with-checkcolumn="true"
+                        on-select-row="selecionarfila"
+  $scope.appendToEl = angular.element(document.querySelector('#dropdown-long-content'));
+------------------------------
+bugs
+-------------------------------
+validar si se usa ui-boostrap
+ok grilla sin campos selector
+no se puede repetir campos
+no drop ultima columna
+lag al editar
+
+
+------------------------------
+pendientes triviales
+-------------------------------
+ok formato columnas
+ok alineacion columnas
+ok envento select
+ok envento guardar
+
+total registros
+check column
+tamaño culumnas, indicar si se ajusta o respete los width
+cargando ....
+imagen button
+colocar button field el valor del campo
+Header fixed
+intentar separar los estylos de boostrap
+
+-------------------
+Plantillas Facture
+--------------------
+F4
+- Crud Basico pag  inteligente or no
+- Consulta con filtros ordenado selector, excel y paginacion inteligente
+- Transacciones con  check column
+
+popup
+
+
+

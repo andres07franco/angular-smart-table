@@ -1,0 +1,140 @@
+<!-- Selector de campos -->
+<div ng-if="configFieldChooser.showFieldChooser === true" class="panel panel-default" style="box-shadow: 0 6px 12px rgba(0,0,0,.175);width:220px;height:{{configFieldChooser.height}}px;position:absolute;top:{{configFieldChooser.top}}px;left:{{configFieldChooser.left}}px;z-index:1000;" >
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> Selector de Campos</h3>
+        </div>
+        <div class="panel-body" style="overflow-y: auto;height:150px;">
+            <table class="{{cssclass}} table table-bordered table-hover table-striped table-scrollable" >
+                <thead>
+                    <tr class="selectorField" ng-repeat="field in fields">
+                        <th ng-if="!visibles[field] && titles[field]!='addFieldChooser'" align="{{aligns[field]}}" lr-drag-src="headers" lr-drop-target="headers" >{{titles[field]}}</th>
+                    </tr>
+                    <tr class="selectorField" >
+                        <th style="background: white; padding: 10px;font-weight: normal; text-align: center; vertical-align: middle; height: 99px;" 
+						class="emptyChooser" 
+						ng-if="visibles['addFieldChooser']" align="center"   lr-drag-src="headers" lr-drop-target="headers" >Adicione Campos</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+</div>
+<!-- TABLA DINAMICA -->
+<table st-pipe="call" st-table="data"  class="{{cssclass}} table table-bordered table-hover table-striped table-scrollable" style="table-layout: fixed;" >
+   <thead st-filter-patterns="filtersDefaultPattern">
+		<!-- Fila para los Header de la grilla-->
+      <tr>
+         <th align="center" ng-if="selectionWithCheckcolumn" style="width:50px;"> 
+             <input ng-if="selectionModeMultiple" ng-model="checkAll" ng-change="checkedAll()" type="checkbox"> 
+        </th>
+         <th ng-if="showEditColumn" style="width:50px;"> </th>
+         <th style="width:200px;text-align:{{aligns[field]}}" ng-if="draggable && visibles[field] && titles[field]!='addFieldChooser'"  lr-drag-src="headers" lr-drop-target="headers" st-sort="{{sorters[field]}}" ng-repeat="field in fields">{{titles[field]}}</th>
+         <th style="width:200px;text-align:{{aligns[field]}}" ng-if="!draggable && visibles[field] && titles[field]!='addFieldChooser'" st-sort="{{sorters[field]}}" ng-repeat="field in fields">{{titles[field]}}</th>
+      </tr>
+	  <!-- Fila para los filtros de la grilla-->
+      <tr ng-if="showfilters">
+         <th ng-if="showEditColumn"> </th> <!-- Columna Check vacia para seleccionar registro -->
+         <th ng-if="selectionWithCheckcolumn"></th> <!-- Columna  Editar vacia Registros-->
+         <th ng-if="visibles[field] && titles[field]!='addFieldChooser'" ng-repeat="field in fields"> <!-- Campos de la grilla-->
+            
+			<div ng-if="filters[field]" class="input-group" uib-dropdown>
+			
+					   <!-- Cuando el Filtro es un Input -->
+					 <input 	id="dt{{field}}" ng-if="filtersControls[field] == 'text'" class="form-control" st-search="{{field}}" /> 
+					 
+                    <!-- Cuando el Filtro es un Input -->
+                    <input id="dt{{field}}" ng-if="filtersControls[field] == 'number'" type="number" class="form-control" st-search="{{field}}" />
+
+                
+					 <!-- Cuando el Filtro es un Select -->
+					 <select 	id="dt{{field}}" ng-if="filtersControls[field] == 'select'"  
+                             ng-change="triggerInputByID('dt'+ field)"  ng-model="df"
+                             st-search="{{field}}" class="form-control"
+                                  smart-Filter-Options="filtersSelectlOption[field]">
+                    <option value="" selected>Todos</option>
+					 </select> 
+			
+					<!-- Cuando el Filtro es un uib-datepicker -->
+					 <div ng-if="filtersControls[field] == 'uib-datepicker'" class="form-group input-group" style="margin-bottom: 0px;"  >
+					 
+						<input class="form-control"   st-search="{{field}}" type="text" 
+								uib-datepicker-popup="dd/MM/yyyy" 
+								ng-model="dt"
+								id="dt{{field}}"
+								ng-change="triggerInputByID('dt'+ field)"
+								is-open="filtersDatePickerConf[field].opened" 
+								datepicker-append-to-body="true"
+						 />
+						<span class="input-group-btn "> 
+							<button type="button" class="btn btn-default" ng-click="openPopUpdtFecha(field)"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
+					</div> 			
+
+					 <!-- Cuando el Filtro es un uib-datepicker -->					 
+					 <span class="input-group-btn "> 
+						<button  type="button" class="btn btn-default  " uib-dropdown-toggle  >
+							<i class="glyphicon glyphicon-filter"></i> 
+						</button>
+					 </span>
+					 
+                <ul ng-if="filtersControls[field] != 'uib-datepicker' && filtersControls[field] != 'number'" class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'Contains')"><a href="#">Contiene</a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'NoContains')"><a href="#">No Contiene</a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'StartWith')"><a href="#">Empieza con</a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'EndtWith')"><a href="#">Termina Con</a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'Equals')"><a href="#">Igual a</a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'NoEquals')"><a href="#">No es Igual A</a></li>
+                </ul>
+                <ul ng-if="filtersControls[field] == 'uib-datepicker' || filtersControls[field] == 'number'" class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'Equals')"><a href="#">=</a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'IsGreaterThan')"><a href="#">	&lt; </a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'IsLessThan')"><a href="#">&gt;</a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'NoEquals')"><a href="#">&lt;&gt;</a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'IsGreaterThanOrEqualTo')"><a href="#">&lt;=</a></li>
+                    <li  role="menuitem" ng-click="SelectFilterType(field,'IsLessThanOrEqualTo')"><a href="#">&gt;=</a></li>
+                </ul>
+			</div>
+
+         </th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr st-select-row="row" st-on-select-row="onSelectRow" st-select-mode="{{selectionMode}}" ng-repeat-start="row in data">
+		<!-- Columna Check para seleccionar registro -->
+         <td align="center" ng-if="selectionWithCheckcolumn"> 
+            <input ng-if="!row.isSelected" type="checkbox" > 
+            <input ng-if="row.isSelected" type="checkbox" checked> 
+         </td>
+		 <!-- Columna Editar Registros-->
+         <td align="center" ng-if="showEditColumn"> 
+             <button ng-if="!row.isEditMode" ng-click="changeEditMode(row); $event.stopPropagation();" type="button" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-pencil"></i></button> <button ng-if="row.isEditMode" ng-click="saveChange(row);$event.stopPropagation();" type="button" class="btn btn-default btn-xs"> <i class="glyphicon glyphicon-ok"></i> </button> 
+             <button ng-if="row.isEditMode" ng-click="cancelChange(row);$event.stopPropagation();" type="button" class="btn btn-default btn-xs"> <i class="glyphicon glyphicon-remove"></i> </button> 
+		</td>
+		<!-- Campos de la grilla-->
+         <td ng-if="visibles[field] && titles[field]!='addFieldChooser'" align="{{aligns[field]}}" ng-repeat="field in fields" > 
+             <span ng-if="(!row.isEditMode || !editModes[field]) && !columnsButtons[field]">{{formatField(row[field],formats[field])}}</span> 
+             <input ng-if="row.isEditMode && editModes[field] && !columnsButtons[field]" class="form-control" type="text" ng-model="row[field]"> 
+             <button ng-if="columnsButtons[field]" ng-click="buttonsClicks[field](row);$event.stopPropagation();" type="button" class="btn btn-link btn-xs">{{titles[field]}}</button>
+        </td>
+      </tr>
+	     <!-- Tablas detalle-->
+
+      <tr ng-if="false"  ng-repeat-end>
+         <td colspan="{{data.length}}">
+             <!--
+             <div ng-include src="'/DesktopModules/Facture.Templates.Crud/partials/panel-filtro2.html'"></div>
+                 -->
+         </td>
+      </tr>
+   </tbody>
+   <tfoot>
+   <!-- Paginacion-->
+      <tr>
+         <td colspan="{{data.length}}" class="text-left">
+            <st-pagination st-items-by-page="itemsByPage" st-displayed-pages="displayedPages" st-size-pages="{{sizePages}}"></st-pagination>
+         </td>
+      </tr>
+   </tfoot>
+</table>
+
+<div ng-transclude>
+</div>
